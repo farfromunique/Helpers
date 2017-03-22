@@ -9,7 +9,7 @@
 	namespace ACWPD\Helpers;
 	/*
 	 * Templater Class
-	 * Builds an HTML Template based on a .html.tpl file
+	 * Builds an HTML Template based on a .html.php file
 	 */
 
 	class Templater {
@@ -17,6 +17,19 @@
 		private $template_directory;
 		private $template;
 		private $includes;
+		private $title;
+		private $version;
+		private $body;
+		private $css;
+		private $js;
+		const REPLACEABLE = [
+			'body',
+			'title',
+			'version',
+			
+			'css',
+			'js'
+		];
 
 		/* 
 		 * @param string $template Name of a template file located in $_SERVER['DOCUMENT_ROOT']/private/templates
@@ -28,13 +41,50 @@
 			/* Update this line to move the template directory */
 			$this->template_directory = $_SERVER['DOCUMENT_ROOT'] . '/private/templates/';
 
-			$this->template = $this->template_directory . $template . 'html.tpl';
+			$this->template = $this->template_directory . $template . '.html.php';
 			$this->includes = $includes;
 			if(!file_exists($this->template)) {
-				throw new Exception("No such template file", 1);
+				throw new \Exception("No such template file", 0);
 				return false;
 			}
 			return true;
+		}
+
+		public function setBody(string $template) {
+			if(file_exists($this->template_directory . $template . '.html.php')) {
+				ob_start();
+				require_once($this->template_directory . $template . '.html.php');
+				$this->body = ob_get_contents();
+				ob_end_clean();
+				
+				return true;
+			}
+			throw new \Exception("No such template file", 0);
+			return false;
+		}
+
+		public function appendToBody(string $template) {
+			if(file_exists($this->template_directory . $template . '.html.php')) {
+				ob_start();
+				require_once($this->template_directory . $template . '.html.php');
+				$this->body .= ob_get_contents();
+				ob_end_clean();
+				return true;
+			}
+			throw new \Exception("No such template file", 0);
+			return false;
+		}
+
+		public function prependToBody(string $template) {
+			if(file_exists($this->template_directory . $template . '.html.php')) {
+				ob_start();
+				require_once($this->template_directory . $template . '.html.php');
+				$this->body = $template . ob_get_contents();
+				ob_end_clean();
+				return true;
+			}
+			throw new \Exception("No such template file", 0);
+			return false;
 		}
 
 		/* 
@@ -43,12 +93,20 @@
 		 * @returns string HTML for the page 
 		 */
 		public function getHTML() {
+			$title = $this->title ?? '';
+			$version = $this->version ?? '';
+			$body = $this->body ?? '';
+			$css = $this->css ?? '';
+			$js = $this->js ?? '';
 			extract($this->includes,EXTR_PREFIX_ALL,'templater_');
 			ob_start();
 			require_once($this->template);
-			$output = ob_get_contents();
+			$html = ob_get_contents();
 			ob_end_clean();
-			return $output;
+			foreach ($this::REPLACEABLE as $key) {
+				$html = str_replace("{{".$key."}}",$$key,$html);
+			}
+			return $html;
 		}
 	}
 	
