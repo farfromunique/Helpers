@@ -8,5 +8,9 @@
             "email": "git@acwpd.com"
         }
     ],
-    "require": {}
+    "require": {},
+	"repositiries": {
+		"type": "vcs",
+		"url": "https://github.com/farfromunique/Helpers"
+	}
 }
