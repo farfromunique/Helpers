@@ -6,7 +6,7 @@
 	 * @copyright 2017 ACWPD / Aaron Coquet
 	 */
 
-	namespace ACWPD;
+	namespace ACWPD\Helpers;
 	/*
 	 * Templater Class
 	 * Builds an HTML Template based on a .html.tpl file
