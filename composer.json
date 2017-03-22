@@ -1,0 +1,12 @@
+{
+    "name": "acwpd/helpers",
+    "description": "Helpers for ACWPD projects",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aaron C",
+            "email": "git@acwpd.com"
+        }
+    ],
+    "require": {}
+}
