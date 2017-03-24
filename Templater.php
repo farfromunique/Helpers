@@ -35,7 +35,8 @@
 		 * @param string $template Name of a template file located in $_SERVER['DOCUMENT_ROOT']/private/templates
 		 * @param array $includes Variables to pass to the template. Will be prefixed with 'templater_'
 		 * 
-		 * @return bool Answers 'This is a valid template file'
+		 * @return bool "Does the template file exist?"
+		 * @throws exception if the template file doesn't exist
 		 */
 		public function __construct(string $template, array ...$includes) {
 			/* Update this line to move the template directory */
@@ -50,6 +51,14 @@
 			return true;
 		}
 
+		/* 
+		 * Sets the body of a page (at the {{body}} string) to be equal to a template file.
+		 * 
+		 * @param string $template The template name to set the body to.
+		 *
+		 * @return bool "Does the template file exist?"
+		 * @throws exception if the template file doesn't exist
+		 */
 		public function setBody(string $template) {
 			if(file_exists($this->template_directory . $template . '.html.php')) {
 				ob_start();
@@ -63,6 +72,14 @@
 			return false;
 		}
 
+		/* 
+		 * Add a template file to the end of the body.
+		 * 
+		 * @param string $template The template name to append.
+		 *
+		 * @return bool "Does the template file exist?"
+		 * @throws exception if the template file doesn't exist
+		 */
 		public function appendToBody(string $template) {
 			if(file_exists($this->template_directory . $template . '.html.php')) {
 				ob_start();
@@ -75,6 +92,14 @@
 			return false;
 		}
 
+		/* 
+		 * Add a template file to the start of the body.
+		 * 
+		 * @param string $template The template name to prepend.
+		 * 
+		 * @return bool "Does the template file exist?"
+		 * @throws exception if the template file doesn't exist
+		 */
 		public function prependToBody(string $template) {
 			if(file_exists($this->template_directory . $template . '.html.php')) {
 				ob_start();
