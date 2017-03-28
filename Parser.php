@@ -65,15 +65,10 @@ class Parser {
         }
     }
 
-    private function getRandomFromArray($arr, $num = 1) {
+    public function getRandomFromArray($arr) {
         $keys = array_keys($arr);
         shuffle($keys);
-
-        $r = array();
-        for ($i = 0; $i < $num; $i++) {
-            $r[$i] = $arr[$keys[$i]];
-        }
-        return $r;
+        return $arr[$keys[0]];
     }
 }
 
