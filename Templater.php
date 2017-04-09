@@ -29,14 +29,14 @@
 		];
 
 		/* 
-		 * @param string $template Name of a template file located in DOCUMENT_ROOT/private/templates
+		 * @param string $template Name of a template file located in DOCUMENT_ROOT/protected/templates
 		 * @param array $includes Variables to pass to the template. Will be prefixed with 'templater_'
 		 * 
 		 * @return bool Answers 'This is a valid template file'
 		 */
 		public function __construct(string $template, array ...$includes) {
 			/* Update this line to move the template directory */
-			$this->template_directory = DOCUMENT_ROOT . '/private/templates/';
+			$this->template_directory = DOCUMENT_ROOT . '/protected/templates/';
 
 			$this->template = $this->template_directory . $template . '.html.php';
 			$this->includes = $includes;
