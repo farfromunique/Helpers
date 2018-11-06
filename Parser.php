@@ -6,7 +6,7 @@ namespace ACWPD\Helpers;
  * Provides parsing tools for ACWPD Projects
  * Feel free to use this in your projects! Just provide Attribution by keeping this block in place!
  * 
- * This is version 1.0
+ * This is version 1.1
  * 
  * For the latest version, please visit: https://github.com/farfromunique/ACWPD_Tools
  * 
@@ -69,6 +69,29 @@ class Parser {
         $keys = array_keys($arr);
         shuffle($keys);
         return $arr[$keys[0]];
+    }
+
+    public function parseURI(string $URI): array {
+        $out = [];
+        $matches = [];
+        $patterns = [
+            'scheme' => '/^(\w+):\/\//',
+            'user' => '\/\/(\w+)[:@]',
+            'pass' => ':(\w+)@',
+            'host' => '(?:(?::\/\/)|@)([\w\.]+)(?:\/|$)',
+            'path' => '\w(\/(?:\w)+|\/)',
+            'query' => '\w\?((?:\w|\&|=)+)[#\/!]?\w*$',
+            'fragment' => '#((?:\w)+)'
+        ];
+        foreach ($patterns as $name => $pattern) {
+            \preg_match($pattern,$URI,$matches);
+            if( isset($matches[1])) {
+                $out[$name] = $matches[1];
+            } else {
+                $out[$name] = '';
+            }
+        }
+        return $out;
     }
 }
 
